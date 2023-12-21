@@ -3,6 +3,7 @@
   "displayName": "Quandary",
   "description": "Language support for Quandary",
   "version": "1.0.0",
+  "publisher": "cameroncromer",
   "repository": {
     "type": "git",
     "url": "https://github.com/cameroncromer/vscode-quandary.git"
