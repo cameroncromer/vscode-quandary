@@ -1,0 +1,560 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Quandary",
+	"patterns": [
+		{
+			"include": "#comment"
+		},
+		{
+			"include": "#function-definition"
+		}
+	],
+	"repository": {
+		"statement": {
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#while-statement"
+				},
+				{
+					"include": "#if-statement"
+				},
+				{
+					"include": "#else-part"
+				},
+				{
+					"include": "#return-statement"
+				},
+				{
+					"include": "#print-statement"
+				},
+				{
+					"include": "#free-statement"
+				},
+				{
+					"include": "#variable-declaration"
+				},
+				{
+					"include": "#block"
+				},
+				{
+					"include": "#expression"
+				},
+				{
+					"include": "#punctuation-semicolon"
+				}
+			]
+		},
+		"expression": {
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#type-builtin"
+				},
+				{
+					"include": "#type-extended"
+				},
+				{
+					"include": "#assignment-expression"
+				},
+				{
+					"include": "#expression-operators"
+				},
+				{
+					"include": "#call-expression"
+				},
+				{
+					"include": "#cast-expression"
+				},
+				{
+					"include": "#literal"
+				},
+				{
+					"include": "#parenthesized-expression"
+				},
+				{
+					"include": "#bracketed-expression"
+				},
+				{
+					"include": "#identifier"
+				}
+			]
+		},
+		"function-definition": {
+			"begin": "(?x)\n(?<return_type>\n  (?<type_name>\n    (?:mutable\\s+)?\n    (?<identifier>[_[:alpha:]][_[:alnum:]]*)\n  )\\s+\n)\n(\\g<identifier>)\\s*\n(?=\\()",
+			"beginCaptures": {
+				"1": {
+					"patterns": [
+						{
+							"include": "#type"
+						}
+					]
+				},
+				"4": {
+					"name": "entity.name.function.q"
+				}
+			},
+			"end": "(?<=\\})",
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#parenthesized-parameter-list"
+				},
+				{
+					"include": "#block"
+				}
+			]
+		},
+		"block": {
+			"begin": "\\{",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.curlybrace.open.q"
+				}
+			},
+			"end": "\\}",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.curlybrace.close.q"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#statement"
+				}
+			]
+		},
+		"variable-initializer": {
+			"begin": "(?<!=|!)(=)(?!=)",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.operator.assignment.q"
+				}
+			},
+			"end": "(?=;)",
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"return-statement": {
+			"begin": "\\b(return)\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.flow.return.q"
+				}
+			},
+			"end": "(?=;)",
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"print-statement": {
+			"begin": "\\b(print)\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.operator.expression.print.q"
+				}
+			},
+			"end": "(?=;)",
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"free-statement": {
+			"begin": "\\b(free)\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.operator.expression.free.q"
+				}
+			},
+			"end": "(?=;)",
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"if-statement": {
+			"begin": "\\b(if)\\b\\s*(?=\\()",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.conditional.if.q"
+				}
+			},
+			"end": "(?<=})|(?=;)",
+			"patterns": [
+				{
+					"begin": "\\(",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.parenthesis.open.q"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.parenthesis.close.q"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#expression"
+						}
+					]
+				},
+				{
+					"include": "#statement"
+				}
+			]
+		},
+		"else-part": {
+			"begin": "\\b(else)\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.conditional.else.q"
+				}
+			},
+			"end": "(?<=})|(?=;)",
+			"patterns": [
+				{
+					"include": "#statement"
+				}
+			]
+		},
+		"while-statement": {
+			"begin": "\\b(while)\\b\\s*(?=\\()",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.loop.while.q"
+				}
+			},
+			"end": "(?<=})|(?=;)",
+			"patterns": [
+				{
+					"begin": "\\(",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.parenthesis.open.q"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.parenthesis.close.q"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#expression"
+						}
+					]
+				},
+				{
+					"include": "#statement"
+				}
+			]
+		},
+		"variable-declaration": {
+			"begin": "(?x)\n(?<type_name>\n  (?:mutable\\s+)?\n  (?<identifier>[_[:alpha:]][_[:alnum:]]*)\n)\\s+\n(\\g<identifier>)\\s*\n(?==)",
+			"beginCaptures": {
+				"1": {
+					"patterns": [
+						{
+							"include": "#type"
+						}
+					]
+				},
+				"3": {
+					"name": "entity.name.variable.local.q"
+				}
+			},
+			"end": "(?=;)",
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#variable-initializer"
+				}
+			]
+		},
+		"literal": {
+			"patterns": [
+				{
+					"include": "#nil-literal"
+				},
+				{
+					"include": "#int-literal"
+				}
+			]
+		},
+		"nil-literal": {
+			"name": "constant.language.nil.q",
+			"match": "\\bnil\\b"
+		},
+		"int-literal": {
+			"name": "constant.numeric.decimal.q",
+			"match": "(?<!\\w)\\d+"
+		},
+		"assignment-expression": {
+			"begin": "=(?!=)",
+			"beginCaptures": {
+				"0": {
+					"patterns": [
+						{
+							"include": "#assignment-operator"
+						}
+					]
+				}
+			},
+			"end": "(?=;)",
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"assignment-operator": {
+			"name": "keyword.operator.assignment.q",
+			"match": "\\="
+		},
+		"expression-operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.comparison.q",
+					"match": "==|!="
+				},
+				{
+					"name": "keyword.operator.relational.q",
+					"match": "<=|>=|<|>"
+				},
+				{
+					"name": "keyword.operator.logical.q",
+					"match": "\\!|&&|\\|\\|"
+				},
+				{
+					"name": "keyword.operator.arithmetic.q",
+					"match": "\\+|-|\\*"
+				},
+				{
+					"name": "keyword.operator.dot.q",
+					"match": "\\."
+				}
+			]
+		},
+		"parenthesized-expression": {
+			"begin": "\\(",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.parenthesis.open.q"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.parenthesis.close.q"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"bracketed-expression": {
+			"begin": "\\[",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.squarebracket.open.q"
+				}
+			},
+			"end": "\\]",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.squarebracket.close.q"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"identifier": {
+			"name": "variable.other.readwrite.q",
+			"match": "[_[:alpha:]][_[:alnum:]]*"
+		},
+		"cast-expression": {
+			"match": "(?x)\n(\\()\\s*\n(?<type_name>\n  (?<identifier>[_[:alpha:]][_[:alnum:]]*)\n)\\s*\n(\\))(?=\\s*-*[_[:alnum:]\\(])",
+			"captures": {
+				"1": {
+					"name": "punctuation.parenthesis.open.q"
+				},
+				"2": {
+					"patterns": [
+						{
+							"include": "#type"
+						}
+					]
+				},
+				"4": {
+					"name": "punctuation.parenthesis.close.q"
+				}
+			}
+		},
+		"call-expression": {
+			"begin": "([_[:alpha:]][_[:alnum:]]*)\\s*(?=\\()",
+			"beginCaptures": {
+				"1": {
+					"name": "entity.name.function.q"
+				}
+			},
+			"end": "(?<=\\))",
+			"patterns": [
+				{
+					"include": "#argument-list"
+				}
+			]
+		},
+		"parenthesized-parameter-list": {
+			"begin": "(\\()",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.parenthesis.open.q"
+				}
+			},
+			"end": "(\\))",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.parenthesis.close.q"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#parameter"
+				},
+				{
+					"include": "#punctuation-comma"
+				}
+			]
+		},
+		"parameter": {
+			"match": "(?x)\n(?<type_name>\n  (?:mutable\\s+)?\n  (?<identifier>[_[:alpha:]][_[:alnum:]]*)\n)\\s+\n(\\g<identifier>)",
+			"captures": {
+				"1": {
+					"patterns": [
+						{
+							"include": "#type"
+						}
+					]
+				},
+				"3": {
+					"name": "entity.name.variable.parameter.q"
+				}
+			}
+		},
+		"argument-list": {
+			"begin": "\\(",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.parenthesis.open.q"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.parenthesis.close.q"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#argument"
+				},
+				{
+					"include": "#punctuation-comma"
+				}
+			]
+		},
+		"argument": {
+			"patterns": [
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"type": {
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#mutable-modifier"
+				},
+				{
+					"include": "#type-builtin"
+				},
+				{
+					"include": "#type-extended"
+				}
+			]
+		},
+		"mutable-modifier": {
+			"name": "storage.modifier.mutable.q",
+			"match": "\\bmutable\\b"
+		},
+		"type-builtin": {
+			"match": "\\b(int|Q|Ref)\\b",
+			"captures": {
+				"1": {
+					"name": "keyword.type.$1.q"
+				}
+			}
+		},
+		"type-extended": {
+			"match": "\\b(NonNilRef|(?:NonEmpty)?List)\\b",
+			"captures": {
+				"1": {
+					"name": "keyword.type.$1.q"
+				}
+			}
+		},
+		"punctuation-comma": {
+			"name": "punctuation.separator.comma.q",
+			"match": ","
+		},
+		"punctuation-semicolon": {
+			"name": "punctuation.terminator.statement.q",
+			"match": ";"
+		},
+		"comment": {
+			"patterns": [
+				{
+					"name": "comment.block.q",
+					"begin": "/\\*",
+					"end": "\\*/",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.q"
+						}
+					}
+				}
+			]
+		}
+	},
+	"scopeName": "source.q"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "quandary",
+  "displayName": "Quandary",
+  "description": "Language support for Quandary",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cameroncromer/vscode-quandary.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "quandary",
+        "aliases": [
+          "Quandary",
+          "quandary"
+        ],
+        "extensions": [
+          ".q",
+          ".qet"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "quandary",
+        "scopeName": "source.q",
+        "path": "./syntaxes/quandary.tmLanguage.json"
+      }
+    ]
+  }
+}
