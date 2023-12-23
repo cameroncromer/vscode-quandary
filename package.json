@@ -2,11 +2,17 @@
   "name": "quandary-lang",
   "displayName": "Quandary language",
   "description": "Language support for Quandary",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "cameroncromer",
   "repository": {
     "type": "git",
     "url": "https://github.com/cameroncromer/vscode-quandary.git"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "icon": "./images/icon.png",
+  "galleryBanner": {
+    "color": "#A7B1B7",
+    "theme": "light"
   },
   "engines": {
     "vscode": "^1.85.0"
@@ -26,7 +32,11 @@
           ".q",
           ".qet"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./images/icon.png",
+          "dark": "./images/icon.png"
+        }
       }
     ],
     "grammars": [
